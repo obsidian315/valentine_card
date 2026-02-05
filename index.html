@@ -11,6 +11,7 @@
       font-family: Arial, sans-serif;
       background-color: #ffe6e6;
       padding: 20px;
+      overflow-x: hidden;
     }
 
     img {
@@ -27,10 +28,16 @@
       border-radius: 10px;
       border: none;
       cursor: pointer;
+      position: relative;
+      transition: all 0.2s ease;
     }
 
     .hidden {
       display: none;
+    }
+
+    #noBtn {
+      position: absolute;
     }
   </style>
 </head>
@@ -40,6 +47,8 @@
   <!-- MAIN SCREEN -->
   <div id="mainScreen">
     <h1>To the love of my life:</h1>
+
+    <img src="images/question.jpg" alt="Valentine question">
 
     <h2>As I looked back at some of the poems I've written for you, I found one from a few years back.</h2>
     <h2>I reflected on it, to see if it stood the test of time, and without a doubt it has.</h2>
@@ -60,7 +69,7 @@
     <p>I hope to continue to find new ways to surprise you</p>
     <p>and demonstrate my endlessly growing love and passion.</p>
     <p></p>
-    <p>Jan-08-2021</p>
+    <p>-Joshua, Jan-08-2021</p>
     <p></p>
     <h2>I am so thankful to have you in my life.</h2>
     <h2>We have been through so many changes this past year,</h2>
@@ -73,45 +82,85 @@
 
     <h1>Will You Be My Valentine? 💖</h1>
 
-    <img id="questionImage" src="images/question.jpg" alt="Valentine question">
-
     <div id="buttons">
       <button onclick="showYes()">Yes 💕</button>
-      <button onclick="showNo()">No 😢</button>
+      <button id="noBtn">No 😢</button>
     </div>
   </div>
 
   <!-- YES RESULT -->
   <div id="yesResult" class="hidden">
-    <h2>Yay!!! 💘</h2>
+    <h2>I love youuuuuuuu 💞</h2>
     <img src="images/togepi-happy.gif" alt="Happy Togepi">
-    <p>I love youuuuuuuu 💞</p>
     <button onclick="goBack()">⬅ Back</button>
   </div>
 
   <!-- NO RESULT -->
   <div id="noResult" class="hidden">
     <h2>There is no reason you should ever be reading this</h2>
+    <h2>You stay playinggggggg</h2>
     <img src="images/sad-togepi.gif" alt="Sad Togepi">
-    <p>You stay playinggggggg, get back in that main screen and pick the right answer</p>
     <button onclick="goBack()">⬅ Back</button>
   </div>
 
+  <!-- Confetti library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
+
   <script>
+    /* MAIN SCREEN LOGIC */
     function showYes() {
       document.getElementById("mainScreen").classList.add("hidden");
       document.getElementById("yesResult").classList.remove("hidden");
-    }
 
-    function showNo() {
-      document.getElementById("mainScreen").classList.add("hidden");
-      document.getElementById("noResult").classList.remove("hidden");
+      // Heart confetti
+      confetti({
+        particleCount: 150,
+        spread: 90,
+        origin: { y: 0.6 },
+        shapes: ['circle'],
+        colors: ['#ff4d6d', '#ff8fa3', '#ffb3c6']
+      });
     }
 
     function goBack() {
       document.getElementById("yesResult").classList.add("hidden");
       document.getElementById("noResult").classList.add("hidden");
       document.getElementById("mainScreen").classList.remove("hidden");
+
+      // Reset No button state
+      runawayActive = false;
+      noClickCount = 0;
+      noBtn.style.left = "0px";
+      noBtn.style.top = "0px";
+      noBtn.removeEventListener("mouseenter", moveButton);
+    }
+
+    /* NO BUTTON RUNAWAY AFTER FIRST CLICK */
+    const noBtn = document.getElementById("noBtn");
+    let runawayActive = false; // Is the button running around?
+    let noClickCount = 0; // How many times it has been clicked
+
+    noBtn.addEventListener("click", () => {
+      noClickCount++;
+
+      if (!runawayActive) {
+        // First click: activate runaway
+        runawayActive = true;
+        noBtn.addEventListener("mouseenter", moveButton);
+        alert("Oops! Now the No button is tricky 😉");
+      } else {
+        // Second click: actually go to No screen
+        document.getElementById("mainScreen").classList.add("hidden");
+        document.getElementById("noResult").classList.remove("hidden");
+      }
+    });
+
+    function moveButton() {
+      const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+      const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
     }
   </script>
 
