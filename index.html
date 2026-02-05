@@ -11,7 +11,7 @@
       font-family: Arial, sans-serif;
       background-color: #ffe6e6;
       padding: 20px;
-      overflow-x: hidden;
+      overflow: hidden; /* prevent scroll from moving button off-screen */
     }
 
     img {
@@ -28,8 +28,8 @@
       border-radius: 10px;
       border: none;
       cursor: pointer;
-      position: relative;
-      transition: all 0.2s ease;
+      position: absolute;
+      transition: all 0.1s ease;
     }
 
     .hidden {
@@ -37,7 +37,9 @@
     }
 
     #noBtn {
-      position: absolute;
+      left: 50%;  /* start in the center */
+      top: 50%;
+      transform: translate(-50%, -50%);
     }
   </style>
 </head>
@@ -77,29 +79,28 @@
     <h2>I can't imagine a life without you, and I thank God every day </h2>
     <h2>for the privilege to call you my fiance, to be able to see you</h2>
     <h2>and talk to you and just walk through life together.</h2>
-  
-    <h2>To the most important person in my life, I have one question.</h2>
 
     <h1>Will You Be My Valentine? 💖</h1>
 
     <div id="buttons">
-      <button onclick="showYes()">Yes 💕</button>
+      <button onclick="showYes()" style="position:relative;">Yes 💕</button>
       <button id="noBtn">No 😢</button>
     </div>
   </div>
 
   <!-- YES RESULT -->
   <div id="yesResult" class="hidden">
-    <h2>I love youuuuuuuu 💞</h2>
+    <h2>Yay!!! 💘</h2>
     <img src="images/togepi-happy.gif" alt="Happy Togepi">
+    <p>I love youuuuuuuu 💞</p>
     <button onclick="goBack()">⬅ Back</button>
   </div>
 
   <!-- NO RESULT -->
   <div id="noResult" class="hidden">
     <h2>There is no reason you should ever be reading this</h2>
-    <h2>You stay playinggggggg</h2>
     <img src="images/sad-togepi.gif" alt="Sad Togepi">
+    <p>You stay playinggggggg</p>
     <button onclick="goBack()">⬅ Back</button>
   </div>
 
@@ -130,28 +131,38 @@
       // Reset No button state
       runawayActive = false;
       noClickCount = 0;
-      noBtn.style.left = "0px";
-      noBtn.style.top = "0px";
-      noBtn.removeEventListener("mouseenter", moveButton);
+      noBtn.style.left = "50%";
+      noBtn.style.top = "50%";
+      noBtn.style.transform = "translate(-50%, -50%)";
+
+      // Stop moving interval
+      clearInterval(moveInterval);
     }
 
-    /* NO BUTTON RUNAWAY AFTER FIRST CLICK */
+    /* NO BUTTON CONSTANT RUNAWAY AFTER FIRST CLICK */
     const noBtn = document.getElementById("noBtn");
-    let runawayActive = false; // Is the button running around?
-    let noClickCount = 0; // How many times it has been clicked
+    let runawayActive = false;
+    let noClickCount = 0;
+    let moveInterval;
 
     noBtn.addEventListener("click", () => {
       noClickCount++;
 
       if (!runawayActive) {
-        // First click: activate runaway
+        // First click: start running
         runawayActive = true;
-        noBtn.addEventListener("mouseenter", moveButton);
-        alert("You THOUGHT it was going to be that easy");
+
+        // Start moving every 200ms
+        moveInterval = setInterval(moveButton, 200);
+
+        alert("Oops! Now the No button is tricky 😉");
       } else {
         // Second click: actually go to No screen
         document.getElementById("mainScreen").classList.add("hidden");
         document.getElementById("noResult").classList.remove("hidden");
+
+        // Stop moving
+        clearInterval(moveInterval);
       }
     });
 
@@ -161,6 +172,7 @@
 
       noBtn.style.left = `${x}px`;
       noBtn.style.top = `${y}px`;
+      noBtn.style.transform = "translate(0, 0)";
     }
   </script>
 
