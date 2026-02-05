@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine?</title>
+    <style>
+      body {
+        text-align: center;
+        font-family: Arial, sans-serif;
+        background-color: #ffe6e6;
+      }
+      .hidden {
+        display: none;
+      }
+      button {
+        padding: 15px 30px;
+        font-size: 18px;
+        margin: 10px;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+    </style>
+</head>
+<body>
+  <h1>Will You Be My Valentine?</h1>
+
+  <button onclick="showAnswer('yes')">Yes 💖</button>
+  <button onclick="showAnswer('no')">No 😢</button>
+
+  <div id="yes" class="hidden">
+    <h2>Yay! 💘</h2>
+    <img src="images/yes.png" width="250px">
+    <p>Can’t wait to celebrate with you!</p>
+  </div>
+
+  <div id="no" class="hidden">
+    <h2>😔 Oh…</h2>
+    <img src="images/no.png" width="250px">
+    <p>Still glad I asked 💕</p>
+  </div>
+
+  <script>
+    function showAnswer(ans) {
+      document.getElementById('yes').classList.add('hidden');
+      document.getElementById('no').classList.add('hidden');
+      document.getElementById(ans).classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
