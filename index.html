@@ -36,15 +36,26 @@
       display: none;
     }
 
-    /* Container for buttons to allow absolute positioning within it */
+    /* Button container */
     #buttons {
-      position: relative;
-      height: 100px; /* gives space for the moving No button */
+      position: relative; 
+      height: 120px; /* enough vertical space for moving No button */
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 40px; /* space between buttons */
+      flex-wrap: wrap; /* wraps nicely on narrow screens */
     }
 
+    /* Yes button stays in normal flow */
+    #buttons button:first-child {
+      position: relative;
+    }
+
+    /* No button starts positioned slightly right */
     #noBtn {
-      position: absolute; /* allows it to move within #buttons */
-      left: 50%;
+      position: absolute;
+      left: 60%; 
       top: 20px;
       transform: translate(-50%, 0);
     }
@@ -105,8 +116,11 @@
   <!-- NO RESULT -->
   <div id="noResult" class="hidden">
     <h2>There is no reason you should ever be reading this</h2>
-    <h2>You stay playinggggggg</h2>
+    <h2>You tryna be messy FRFR</h2>
+    <h2></h2>
+    <h2>Try Again. 😐</h2>
     <img src="images/sad-togepi.gif" alt="Sad Togepi">
+
     <button onclick="goBack()">⬅ Back</button>
   </div>
 
@@ -141,7 +155,10 @@
       runawayActive = false;
       noClickCount = 0;
       clearInterval(moveInterval);
-      noBtn.style.left = "50%";
+
+      // Reset position
+      noBtn.style.position = "absolute";
+      noBtn.style.left = "60%";
       noBtn.style.top = "20px";
       noBtn.style.transform = "translate(-50%, 0)";
     }
@@ -156,6 +173,7 @@
 
       noBtn.style.left = `${x}px`;
       noBtn.style.top = `${y}px`;
+      noBtn.style.transform = "translate(0, 0)";
     }
 
     // Click logic for No button
@@ -165,9 +183,8 @@
       if (!runawayActive) {
         runawayActive = true;
         moveInterval = setInterval(moveButton, 200);
-        alert("Oops! Now the No button is tricky 😉");
+        alert("Yea you THOUGHT you was hitting that");
       } else {
-        // Second click: actually go to No screen
         document.getElementById("mainScreen").classList.add("hidden");
         document.getElementById("noResult").classList.remove("hidden");
         clearInterval(moveInterval);
