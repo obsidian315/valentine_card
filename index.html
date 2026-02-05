@@ -39,8 +39,8 @@
 
   <h1>To the love of my life:</h1>
 
-  <!-- Image shown BEFORE clicking -->
-  <img src="images/question.jpg" alt="Valentine question">
+  <!-- Image shown on main screen -->
+  <img id="questionImage" src="images/question.jpg" alt="Valentine question">
 
   <h2>As I looked back at some of the poems I've written for you, I found one from a few years back.</h2>
   <h2>I reflected on it, to see if it stood the test of time, and without a doubt it has.</h2>
@@ -95,19 +95,27 @@
     <button onclick="goBack()">⬅ Back</button>
   </div>
 
-  <script>
-    function showYes() {
-      document.getElementById("questionImage").classList.add("hidden");
-      document.getElementById("buttons").classList.add("hidden");
-      document.getElementById("yesResult").classList.remove("hidden");
-    }
+<script>
+  function showYes() {
+    document.getElementById("questionImage").classList.add("hidden");
+    document.getElementById("buttons").classList.add("hidden");
+    document.getElementById("yesResult").classList.remove("hidden");
+  }
 
-    function showNo() {
-      document.getElementById("questionImage").classList.add("hidden");
-      document.getElementById("buttons").classList.add("hidden");
-      document.getElementById("noResult").classList.remove("hidden");
-    }
-  </script>
+  function showNo() {
+    document.getElementById("questionImage").classList.add("hidden");
+    document.getElementById("buttons").classList.add("hidden");
+    document.getElementById("noResult").classList.remove("hidden");
+  }
+
+  function goBack() {
+    document.getElementById("yesResult").classList.add("hidden");
+    document.getElementById("noResult").classList.add("hidden");
+    document.getElementById("questionImage").classList.remove("hidden");
+    document.getElementById("buttons").classList.remove("hidden");
+  }
+</script>
+
 
 </body>
 </html>
