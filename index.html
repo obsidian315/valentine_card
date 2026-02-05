@@ -11,8 +11,8 @@
       font-family: Arial, sans-serif;
       background-color: #ffe6e6;
       padding: 20px;
-      /* allow scrolling */
-      overflow-y: auto;
+      overflow-y: auto; /* allow scrolling */
+      margin: 0;
     }
 
     img {
@@ -29,7 +29,6 @@
       border-radius: 10px;
       border: none;
       cursor: pointer;
-      position: relative; /* normal flow initially */
       transition: all 0.1s ease;
     }
 
@@ -37,8 +36,17 @@
       display: none;
     }
 
+    /* Container for buttons to allow absolute positioning within it */
+    #buttons {
+      position: relative;
+      height: 100px; /* gives space for the moving No button */
+    }
+
     #noBtn {
-      position: relative; /* normal flow before first click */
+      position: absolute; /* allows it to move within #buttons */
+      left: 50%;
+      top: 20px;
+      transform: translate(-50%, 0);
     }
   </style>
 </head>
@@ -82,7 +90,7 @@
     <h1>Will You Be My Valentine? 💖</h1>
 
     <div id="buttons">
-      <button onclick="showYes()" style="position:relative;">Yes 💕</button>
+      <button onclick="showYes()">Yes 💕</button>
       <button id="noBtn">No 😢</button>
     </div>
   </div>
@@ -106,207 +114,15 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
 
   <script>
-    /* MAIN SCREEN LOGIC */
-    function showYes() {
-      document.getElementById("mainScreen").classList.add("hidden");
-      document.getElementById("yesResult").classList.remove("hidden");
-
-      // Heart confetti
-      confetti({
-        particleCount: 150,
-        spread: 90,
-        origin: { y: 0.6 },
-        shapes: ['circle'],
-        colors: ['#ff4d6d', '#ff8fa3', '#ffb3c6']
-      });
-    }
-
-    function goBack() {
-      document.getElementById("yesResult").classList.add("hidden");
-      document.getElementById("noResult").classList.add("hidden");
-      document.getElementById("mainScreen").classList.remove("hidden");
-
-      // Reset No button state
-      runawayActive = false;
-      noClickCount = 0;
-
-      // Reset No button position
-      noBtn.style.position = "relative";
-      noBtn.style.left = "0px";
-      noBtn.style.top = "0px";
-      noBtn.style.transform = "translate(0,0)";
-
-      // Stop moving interval
-      clearInterval(moveInterval);
-    }
-
-    /* NO BUTTON CONSTANT RUNAWAY AFTER FIRST CLICK */
     const noBtn = document.getElementById("noBtn");
     let runawayActive = false;
     let noClickCount = 0;
     let moveInterval;
 
-    noBtn.addEventListener("click", () => {
-      noClickCount++;
-
-      if (!runawayActive) {
-        // First click: start running
-        runawayActive = true;
-
-        // Change to fixed so it moves over the viewport without affecting layout
-        noBtn.style.position = "fixed";
-        noBtn.style.left = "50%";
-        noBtn.style.top = "50%";
-        noBtn.style.transform = "translate(-50%, -50%)";
-
-        // Start moving every 200ms
-        moveInterval = setInterval(moveButton, 200);
-
-        alert("You THOUGHT it was gonna be that easy 🕺");
-      } else {
-        // Second click: actually go to No screen
-        document.getElementById("mainScreen").classList.add("hidden");
-        document.getElementById("noResult").classList.remove("hidden");
-
-        // Stop moving
-        clearInterval(moveInterval);
-      }
-    });
-
-    function moveButton() {
-      const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-      const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-
-      noBtn.style.left = `${x}px`;
-      noBtn.style.top = `${y}px`;
-      noBtn.style.transform = "translate(0, 0)";
-    }
-  </script>
-
-</body>
-</html>
-
-
-
-
-
-
-END
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>A Question for my Beautiful Princess</title>
-
-  <style>
-    body {
-      text-align: center;
-      font-family: Arial, sans-serif;
-      background-color: #ffe6e6;
-      padding: 20px;
-      overflow: hidden; /* prevent scroll from moving button off-screen */
-    }
-
-    img {
-      max-width: 90%;
-      height: auto;
-      border-radius: 12px;
-      margin: 15px 0;
-    }
-
-    button {
-      padding: 15px 30px;
-      font-size: 18px;
-      margin: 10px;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-      position: absolute;
-      transition: all 0.1s ease;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    #noBtn {
-      left: 50%;  /* start in the center */
-      top: 50%;
-      transform: translate(-50%, -50%);
-    }
-  </style>
-</head>
-
-<body>
-
-  <!-- MAIN SCREEN -->
-  <div id="mainScreen">
-    <h1>To the love of my life:</h1>
-
-    <img src="images/question.jpg" alt="Valentine question">
-
-    <h2>As I looked back at some of the poems I've written for you, I found one from a few years back.</h2>
-    <h2>I reflected on it, to see if it stood the test of time, and without a doubt it has.</h2>
-    <h2>I wanted to put it here, so you could read it again too.</h2>
-  
-    <p>True romance is like a gently flowing stream.</p>
-    <p>It can never be filled, fully satiated and stagnant,</p>
-    <p>because as the rivers of love flow through,</p>
-    <p>the flooring continuously erodes to develop a volume</p>
-    <p>which is deeper than previously imagined.</p>
-    <p></p>
-    <p>The stronger you love, the higher the limits you can expand to.</p>
-    <p>I don't believe that it's ever possible to fulfill every expectation,</p>
-    <p>because as time continues, our love should never cease to grow,</p>
-    <p>a limit should never be reached.</p>
-    <p></p>
-    <p>Rather than fulfill a list of expectations,</p>
-    <p>I hope to continue to find new ways to surprise you</p>
-    <p>and demonstrate my endlessly growing love and passion.</p>
-    <p></p>
-    <p>-Joshua, Jan-08-2021</p>
-    <p></p>
-    <h2>I am so thankful to have you in my life.</h2>
-    <h2>We have been through so many changes this past year,</h2>
-    <h2>but one thing that remains steadfast is my deep love for you.</h2>
-    <h2>I can't imagine a life without you, and I thank God every day </h2>
-    <h2>for the privilege to call you my fiance, to be able to see you</h2>
-    <h2>and talk to you and just walk through life together.</h2>
-
-    <h1>Will You Be My Valentine? 💖</h1>
-
-    <div id="buttons">
-      <button onclick="showYes()" style="position:relative;">Yes 💕</button>
-      <button id="noBtn">No 😢</button>
-    </div>
-  </div>
-
-  <!-- YES RESULT -->
-  <div id="yesResult" class="hidden">
-    <h2>I love youuuuuuuu 💞</h2>
-    <img src="images/togepi-happy.gif" alt="Happy Togepi">
-    <button onclick="goBack()">⬅ Back</button>
-  </div>
-
-  <!-- NO RESULT -->
-  <div id="noResult" class="hidden">
-    <h2>There is no reason you should ever be reading this</h2>
-    <h2>You stay playinggggggg</h2>
-    <img src="images/sad-togepi.gif" alt="Sad Togepi">
-    <button onclick="goBack()">⬅ Back</button>
-  </div>
-
-  <!-- Confetti library -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
-
-  <script>
-    /* MAIN SCREEN LOGIC */
     function showYes() {
       document.getElementById("mainScreen").classList.add("hidden");
       document.getElementById("yesResult").classList.remove("hidden");
 
-      // Heart confetti
       confetti({
         particleCount: 150,
         spread: 90,
@@ -321,52 +137,42 @@ END
       document.getElementById("noResult").classList.add("hidden");
       document.getElementById("mainScreen").classList.remove("hidden");
 
-      // Reset No button state
+      // Reset No button
       runawayActive = false;
       noClickCount = 0;
+      clearInterval(moveInterval);
       noBtn.style.left = "50%";
-      noBtn.style.top = "50%";
-      noBtn.style.transform = "translate(-50%, -50%)";
-
-      // Stop moving interval
-      clearInterval(moveInterval);
+      noBtn.style.top = "20px";
+      noBtn.style.transform = "translate(-50%, 0)";
     }
 
-    /* NO BUTTON CONSTANT RUNAWAY AFTER FIRST CLICK */
-    const noBtn = document.getElementById("noBtn");
-    let runawayActive = false;
-    let noClickCount = 0;
-    let moveInterval;
+    function moveButton() {
+      const container = document.getElementById("buttons");
+      const containerWidth = container.clientWidth - noBtn.offsetWidth;
+      const containerHeight = container.clientHeight - noBtn.offsetHeight;
 
+      const x = Math.random() * containerWidth;
+      const y = Math.random() * containerHeight;
+
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
+    }
+
+    // Click logic for No button
     noBtn.addEventListener("click", () => {
       noClickCount++;
 
       if (!runawayActive) {
-        // First click: start running
         runawayActive = true;
-
-        // Start moving every 200ms
         moveInterval = setInterval(moveButton, 200);
-
-        alert("You THOUGHT it was gonna be that easy 🕺");
+        alert("Oops! Now the No button is tricky 😉");
       } else {
         // Second click: actually go to No screen
         document.getElementById("mainScreen").classList.add("hidden");
         document.getElementById("noResult").classList.remove("hidden");
-
-        // Stop moving
         clearInterval(moveInterval);
       }
     });
-
-    function moveButton() {
-      const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-      const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-
-      noBtn.style.left = `${x}px`;
-      noBtn.style.top = `${y}px`;
-      noBtn.style.transform = "translate(0, 0)";
-    }
   </script>
 
 </body>
